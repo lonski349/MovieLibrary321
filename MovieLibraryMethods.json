@@ -1,0 +1,32 @@
+[
+    {
+        "method": "resetFromJsonFile",
+        "params":["filename"],
+        "returns": true
+    },
+    {
+	"method": "saveToJsonFile",
+	"params":["filename"],
+	"returns": true
+    },
+    {   // remove(string) --> bool
+        "method": "remove",
+        "params":["Movie"],
+        "returns": true
+    },
+    {   // test service --> send back true to the user
+	"method": "testService",
+	"params": [],
+	"returns": true
+    },
+    {   // get(string) --> json Movie Description
+        "method": "get",
+        "params":["Movie"],
+        "returns": { }
+    },
+    {   // getTitles() --> json array of strings of movie titles
+        "method": "getTitles",
+        "params":[],
+        "returns": [ ]
+    }
+]
