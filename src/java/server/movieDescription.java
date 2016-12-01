@@ -159,7 +159,9 @@ public class movieDescription {
         return Filename;
     }
 
-    public String getGenre(){
+    public Vector<String> getGenre(){
+
+	/*
 	String genre = "";
 	
 	for (int i = 0; i < Genre.size(); i++){
@@ -167,16 +169,21 @@ public class movieDescription {
 	}
     
         return genre;
+	*/
+	return Genre;
     }
 
-    public String getActors(){
-        String actors = "";
+    public Vector<String> getActors(){
+	/*
+	String actors = "";
         
         for (int i = 0; i < Actors.size(); i++){
 	    actors += Actors.get(i);
 	}
         
         return actors;
+	*/
+	return Actors;
     }
 
     /**

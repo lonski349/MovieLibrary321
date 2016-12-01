@@ -24,8 +24,9 @@ import edu.asu.ser.jsonrpc.common.JsonRpcException;
  * @version August 2016
  */
 
+//This file is being used to create the hppt proxy file
 public interface movieLibrary {
-    public boolean resetFromJson(String jsonFileName) throws JsonRpcException;
+    public boolean resetFromJsonFile(String jsonFileName) throws JsonRpcException;
     public boolean toJsonFile(String jsonFileName) throws JsonRpcException;
     public boolean add(movieDescription movie) throws JsonRpcException;
     public boolean remove(String aTitle) throws JsonRpcException;
