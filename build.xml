@@ -8,6 +8,7 @@
    <property name="obj.dir" value="obj"/>
    <property name="host.name" value="127.0.0.1"/>
    <property name="port.num" value="8080"/>
+   <property name="dport.num" value="3030"/>
    <property name="json.file.name" value="MovieLibraryMethods.json"/>
    <property environment="env"/>
    <property name="cxxflag" value="-std=c++14"/>
@@ -18,11 +19,12 @@
    <property name="server.lib.list" value="jsoncpp,jsonrpccpp-server,jsonrpccpp-common,microhttpd,stdc++"/>
 
    <target name="targets">
-      <echo message="Targets are clean, prepare, generate.server.stub, build.server, generate.client.stub, build.client, generate.java.proxy, build.java.client"/>
+      <echo message="Targets are clean, prepare, generate.server.stub, build.server, generate.client.stub, build.client, generate.java.proxy, build.java.server, build.java.dserver, build.java.client"/>
       <echo message="base directory is: ${basedir}"/>
       <echo message="execute cpp server with: ./bin/movieLibraryRPCServer ${port.num}"/>
       <echo message="execute cpp client with: ./bin/movieLibraryRPCClient http://${host.name}:${port.num}"/>
-      <echo message="execute JAVA client with java -cp classes:lib/jsonrpcclient.jar ser321.movie.movieLibraryClient ${host.name} ${port.num}"/>
+      <echo message="execute JAVA client with java -cp classes:lib/jsonrpcclient.jar:lib/movieGui.jar ser321.movie.movieLibraryClient ${host.name} ${port.num} ${dport.num}"/>
+      <echo message="execute JAVA download server with: java -cp classes ser321.serialize.downloadServer ${dport.num}"/>
    </target>
 
    <path id="compile.classpath">
@@ -32,6 +34,7 @@
          <include name="jsonrpcserver.jar"/>
          <include name="jsonrpcclient.jar"/>
          <include name="jsonrpcproxy.jar"/>
+	 <include name="movieGui.jar"/>
       </fileset>
    </path>
 
@@ -43,6 +46,8 @@
               failonerror="false"/>
       <delete file="${src.dir}/cpp/client/movielibraryclientstub.h"
               failonerror="false"/>
+      <delete file="${src.dir}/java/client/MovieHttpProxy.java"
+	      failonerror="false"/>
    </target>
 
    <target name="prepare">
@@ -111,7 +116,17 @@
      </javac>
    </target>
 
-   <target name="generate.java.proxy" depends="build.java.server"
+   <target name="build.java.dserver" depends="build.java.server"
+	   description="Compile Java download server sources">
+     <echo message="compiling download server"/>
+     <javac srcdir="${src.dir}/java/dserver"
+	    destdir="${classes.dir}"
+	    includeantruntime="false">
+       <classpath refid="compile.classpath"/>
+     </javac>
+   </target>
+   
+   <target name="generate.java.proxy" depends="build.java.dserver"
 	   description="Execute the jsonRPC proxy generator to generate client proxy.">
      <echo message="http proxy: java -cp classes:lib/jsonrpcproxy.jar edu.asu.ser.jsonrpc.proxy.ProxyGenerator -l java -t http -o CalculatorHttpProxy ser321.movieServer.movieLibrary ser321.movieServer.movieDescription"/>
      <java classname="edu.asu.ser.jsonrpc.proxy.ProxyGenerator"
